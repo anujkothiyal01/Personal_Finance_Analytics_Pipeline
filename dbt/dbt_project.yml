@@ -1,0 +1,35 @@
+name: 'Personal_Finance_Analytics_Pipeline'
+version: '1.0.0'
+config-version: 2
+
+profile: 'Personal_Finance_Analytics_Pipeline'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  Personal_Finance_Analytics_Pipeline:
+    staging:
+      +materialized: view
+      +schema: silver
+
+    intermediate:
+      +materialized: view
+      +schema: silver
+
+    marts:
+      +schema: gold
+      dimensions:
+        +materialized: table
+      facts:
+        +materialized: table
+      semantic:
+        +materialized: table

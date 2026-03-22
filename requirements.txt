@@ -1,0 +1,4 @@
+dbt-snowflake==1.11.3
+streamlit
+snowflake-snowpark-python
+pandas

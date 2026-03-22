@@ -1,0 +1,57 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: Personal_Finance_Analytics_Pipeline
+    schema: bronze
+    tables:
+      - name: transactions_raw
+        description: Raw personal finance transactions loaded into bronze.
+        columns:
+          - name: txn_id
+            tests:
+              - not_null
+              - unique
+          - name: txn_date
+            tests:
+              - not_null
+          - name: updated_at
+            tests:
+              - not_null
+          - name: txn_type
+            tests:
+              - not_null
+          - name: amount
+            tests:
+              - not_null
+
+models:
+  - name: stg_transactions
+    description: Cleaned staging model built from bronze transactions.
+    columns:
+      - name: txn_id
+        tests:
+          - not_null
+          - unique
+      - name: txn_date
+        tests:
+          - not_null
+      - name: txn_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['income', 'expense', 'transfer']
+      - name: amount
+        tests:
+          - not_null
+
+  - name: int_transactions_enriched
+    description: Enriched silver model with derived finance fields.
+    columns:
+      - name: txn_id
+        tests:
+          - not_null
+          - unique
+      - name: net_amount
+        tests:
+          - not_null
